@@ -32,11 +32,4 @@ Staff read customers through the SQL view `v_customer_directory`, which never ex
 - `app.py` – all routes · `seed.py` – demo data · `test_bank.py` – tests
 - `templates/` – HTML pages
 
-## Safety features
-Money in integer paise (no float errors) · atomic transfers with `BEGIN IMMEDIATE` (race-safe) ·
-`CHECK balance >= 0` · immutable ledger & audit log (DB triggers) · frozen accounts blocked at DB level ·
-hashed passwords · CSRF tokens · parameterised SQL · lock after 5 failed logins · audit trail.
 
-## Production notes
-Set `SECRET_KEY` env var, serve via gunicorn behind HTTPS. To use MySQL/PostgreSQL, swap `db.py`
-and adjust `AUTOINCREMENT`/`CURRENT_TIMESTAMP`/trigger syntax in `schema.sql`.
