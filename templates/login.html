@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}Log in{% endblock %}
+{% block body %}<div class="auth">
+<div><span class="eyebrow">Digital banking</span><h1>Money, handled <em>quietly.</em></h1>
+<p class="mut" style="max-width:38ch">Every rupee is recorded in an unalterable ledger. Customers see their own money; staff see only what their role allows.</p>
+<div class="float"><span>●●  SecureBank</span><span class="mono">BNK •••• •••• 4821</span><strong>₹ 48,750.00</strong></div></div>
+<div class="card" style="margin:0"><h2>Welcome back</h2>
+<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<label>Username</label><input name="username" autocomplete="username" required autofocus>
+<label>Password</label><input name="password" type="password" autocomplete="current-password" required><br><br>
+<button style="width:100%">Log in</button></form>
+<p class="mut" style="margin:18px 0 0">New here? <a href="{{ url_for('register') }}">Open an account</a></p></div></div>{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block title %}{{ c.full_name }}{% endblock %}
+{% block body %}<div class="card"><h2 style="margin-top:0">{{ c.full_name }}</h2>
+<div class="mut">{{ c.username }} · {{ c.email }} · {{ c.phone or 'no phone' }} · customer since {{ c.created_at }}</div></div>
+<div class="card"><h3>Accounts</h3><table><tr><th>Account no.</th><th>Type</th><th>Status</th><th>Balance</th><th></th></tr>
+{% for a in accounts %}<tr><td>{{ a.account_number }}</td><td>{{ a.account_type|title }}</td><td><span class="pill">{{ a.status }}</span></td>
+<td>{{ a.balance_paise|inr }}</td><td><a href="{{ url_for('account_view', account_id=a.id) }}">View →</a></td></tr>{% endfor %}</table></div>
+<div class="card"><h3>Open another account</h3>
+<form method="post" action="{{ url_for('staff_open_account', uid=c.user_id) }}" class="row"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<select name="account_type"><option value="savings">Savings</option><option value="current">Current</option></select><button>Open account</button></form></div>
+{% endblock %}

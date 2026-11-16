@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}Register{% endblock %}
+{% block body %}<div class="card narrow">
+    <h2>Open a savings account</h2>
+    <form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <label>Full name</label><input name="full_name" required>
+        <label>Username</label><input name="username" required>
+        <label>Email</label><input name="email" type="email" required>
+        <label>Phone (optional)</label><input name="phone">
+        <label>Password (8+ chars, letters &amp; digits)</label><input name="password" type="password" required><br><br>
+        <button>Register</button>
+    </form>
+</div>{% endblock %}

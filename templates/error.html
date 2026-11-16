@@ -1,0 +1,2 @@
+{% extends "base.html" %}{% block title %}Error{% endblock %}
+{% block body %}<div class="card narrow"><h2>{{ e.code }} — {{ e.name }}</h2><p class="mut">{{ 'You are not allowed to access this page.' if e.code==403 else e.description }}</p><a class="btn" href="{{ url_for('index') }}">Home</a></div>{% endblock %}

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Bank{% endblock %} · SecureBank</title>
+  <script>try { document.documentElement.dataset.theme = localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") } catch (e) { }</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono&family=Instrument+Serif:ital@0;1&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='particles.js') }}"></script>
+
+  <!-- High-Visibility Scan Grid Workflow Button -->
+  <div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1000;">
+    <a href="/static/how_it_works.html" class="scan-grid-button"
+      style="position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 32px; border-radius: 8px; background: #0b0f19; color: #4DFF22; font-family: 'Inter', sans-serif; font-weight: 600; font-size: 15px; text-decoration: none; cursor: pointer; overflow: hidden; border: 1.5px solid #4DFF22; box-shadow: 0 0 15px rgba(77, 255, 34, 0.2); transition: all 0.3s ease; white-space: nowrap;">
+
+      <!-- SVG Corner Brackets -->
+      <svg aria-hidden="true"
+        style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 2;"
+        viewBox="0 0 240 60" preserveAspectRatio="none">
+        <path d="M 1 15 L 1 6 A 5 5 0 0 1 6 1 L 15 1" stroke="#4DFF22" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" fill="none" />
+        <path d="M 225 1 L 234 1 A 5 5 0 0 1 239 6 L 239 15" stroke="#4DFF22" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" fill="none" />
+        <path d="M 239 45 L 239 54 A 5 5 0 0 1 234 59 L 225 59" stroke="#4DFF22" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" fill="none" />
+        <path d="M 15 59 L 6 59 A 5 5 0 0 1 1 54 L 1 45" stroke="#4DFF22" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" fill="none" />
+      </svg>
+
+      <!-- Icon & Text -->
+      <span style="position: relative; z-index: 3; font-size: 18px;">⚡</span>
+      <span style="position: relative; z-index: 3; letter-spacing: 0.5px;">VIEW SYSTEM ARCHITECTURE</span>
+    </a>
+  </div>
+
+</head>
+
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <nav><b>SecureBank</b>
+    {% if me %}
+    {% if me.role=='customer' %}<a href="{{ url_for('dashboard') }}">Accounts</a><a
+      href="{{ url_for('transfer') }}">Transfer</a><a href="{{ url_for('withdraw') }}">Withdraw</a>{% endif %}
+    {% if me.role in ('teller','manager') %}<a href="{{ url_for('staff_customers') }}">Customers</a><a
+      href="{{ url_for('counter') }}">Counter</a>{% endif %}
+    {% if me.role=='manager' %}<a href="{{ url_for('manager_users') }}">Staff</a><a
+      href="{{ url_for('audit_view') }}">Audit</a><a href="{{ url_for('report') }}">Reports</a>{% endif %}
+    <span class="who">{{ me.full_name }} · <span class="pill">{{ me.role }}</span></span>
+    <form method="post" action="{{ url_for('logout') }}" class="inline"><input type="hidden" name="csrf_token"
+        value="{{ csrf_token }}"><button class="sec" style="padding:7px 14px">Log out</button></form>
+    {% else %}<a href="{{ url_for('login') }}">Log in</a><a href="{{ url_for('register') }}">Open account</a>{% endif %}
+    <button id="theme" class="iconbtn sec" type="button" aria-label="Toggle theme">◐</button>
+
+
+
+  </nav>
+  <main>
+    {% with m = get_flashed_messages(with_categories=true) %}{% for c, t in m %}<div class="msg {{ c }}">{{ t }}</div>{%
+    endfor %}{% endwith %}
+    {% block body %}{% endblock %}
+  </main>
+</body>
+
+</html>

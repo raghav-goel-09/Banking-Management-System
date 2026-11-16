@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block title %}Customers{% endblock %}
+{% block body %}<div class="card"><form class="row"><input name="q" autocomplete="off" value="{{ q }}" placeholder="Search name, username, email or account number"><button>Search</button></form></div>
+<div class="card" id="results"><table><tr><th>Name</th><th>Username</th><th>Email</th><th>Accounts</th><th>Total balance</th><th></th></tr>
+{% for r in rows %}<tr><td>{{ r.full_name }}</td><td>{{ r.username }}</td><td>{{ r.email }}</td><td>{{ r.account_count }}</td><td>{{ r.total_balance_paise|inr }}</td>
+<td><a href="{{ url_for('staff_customer', uid=r.user_id) }}">Open →</a></td></tr>
+{% else %}<tr><td colspan="6" class="mut">No customers found.</td></tr>{% endfor %}</table></div>{% endblock %}

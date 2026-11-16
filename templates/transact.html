@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block title %}{{ mode|title }}{% endblock %}
+{% block body %}<div class="card narrow">
+<h2>{{ {'transfer':'Transfer money','withdraw':'Withdraw cash','counter':'Counter service'}[mode] }}</h2>
+<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+{% if mode in ('transfer','withdraw') %}
+<label>From account</label>
+<select name="from_account" required>{% for a in accounts %}<option value="{{ a.id }}">{{ a.account_number }} — {{ a.balance_paise|inr }}</option>{% endfor %}</select>
+{% endif %}
+{% if mode=='transfer' %}<label>Beneficiary account number</label><input name="to_number" placeholder="BNK0123456789" autocomplete="off" required><div id="bene" class="hint" aria-live="polite"></div>{% endif %}
+{% if mode=='counter' %}<label>Account number</label><input name="account_number" required>
+<label>Action</label><select name="action"><option value="deposit">Deposit</option><option value="withdraw">Withdraw</option></select>{% endif %}
+<label>Amount (₹)</label><input name="amount" inputmode="decimal" placeholder="0.00" required>
+{% if mode=='transfer' %}<label>Note (optional)</label><input name="description" maxlength="100">{% endif %}
+<br><br><button>Submit</button></form></div>{% endblock %}

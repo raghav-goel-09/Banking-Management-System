@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% block title %}Account {{ acc.account_number }}{% endblock %}
+{% block body %}
+<div class="card"><div class="row"><div><div class="mut">{{ acc.account_type|title }} account · <span class="pill">{{ acc.status }}</span></div>
+<h2 style="margin:4px 0">{{ acc.account_number }}</h2>
+<div class="mut">Holder: {{ acc.full_name }} ({{ acc.username }}) · opened {{ acc.opened_at }} UTC</div></div>
+<div style="text-align:right"><div class="mut">Balance</div><div class="big">{{ acc.balance_paise|inr }}</div></div></div>
+{% if me.role=='manager' and acc.status!='closed' %}<hr>
+<form method="post" action="{{ url_for('set_account_status', account_id=acc.id) }}" class="row">
+<input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+<select name="status">{% for s in ('active','frozen','closed') %}<option value="{{ s }}" {{ 'selected' if s==acc.status }}>{{ s|title }}</option>{% endfor %}</select>
+<button>Change status</button></form>{% endif %}</div>
+<div class="card"><h3>Transactions (latest 100)</h3>
+<table><tr><th>Date (UTC)</th><th>Type</th><th>Amount</th><th>Balance after</th><th>Other account</th><th>Note</th><th>By</th></tr>
+{% for t in txns %}{% set inflow = t.txn_type in ('deposit','transfer_in') %}
+<tr><td>{{ t.created_at }}</td><td>{{ t.txn_type.replace('_',' ')|title }}</td>
+<td class="{{ 'in' if inflow else 'out' }}">{{ '+' if inflow else '−' }}{{ t.amount_paise|inr }}</td>
+<td>{{ t.balance_after_paise|inr }}</td><td>{{ t.counterparty_acct or '—' }}</td><td>{{ t.description }}</td><td>{{ t.by_user }}</td></tr>
+{% else %}<tr><td colspan="7" class="mut">No transactions yet.</td></tr>{% endfor %}</table></div>
+{% endblock %}

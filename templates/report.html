@@ -1,0 +1,45 @@
+{% extends "base.html" %}{% block title %}Reports{% endblock %}
+{% block body %}
+<div class="card stats">
+    <div>
+        <div class="mut">Customers</div>
+        <div class="big">{{s.customers|int}}</div>
+    </div>
+    <div>
+        <div class="mut">Open accounts</div>
+        <div class="big">{{s.accounts|int}}</div>
+    </div>
+    <div>
+        <div class="mut">Frozen</div>
+        <div class="big">{{s.frozen|int}}</div>
+    </div>
+    <div>
+        <div class="mut">Bank holdings</div>
+        <div class="big">{{s.holdings|inr}}</div>
+    </div>
+    <div>
+        <div class="mut">Ledger entries</div>
+        <div class="big">{{s.txns|int}}</div>
+    </div>
+</div>
+<div class="card">
+    <h3>Volume by type</h3>
+    <table>
+        <tr>
+            <th>Type</th>
+            <th class="num">Count</th>
+            <th class="num">Total</th>
+        </tr>
+        {% for t in by_type %}<tr>
+            <td>{{ t.txn_type.replace('_',' ')|title }}</td>
+            <td class="num">{{ t.n }}</td>
+            <td class="num">{{ t.total|inr }}</td>
+        </tr>{% endfor %}
+    </table>
+</div>
+<div class="card">
+    <h3>Ledger reconciliation</h3>
+    {% if mismatches %}<div class="msg error">{{ mismatches|length }} account(s) do not reconcile:
+        {% for m in mismatches %}<span class="mono">{{ m.account_number }}</span>{% if not loop.last %}, {% endif %}{% endfor %}</div>
+    {% else %}<div class="msg ok">✔ Every account balance matches the sum of its ledger entries.</div>{% endif %}
+</div>{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}Accounts{% endblock %}
+{% block body %}
+<section class="card hero"><span class="eyebrow">Total balance</span><div class="big">{{ total|inr }}</div>
+<div class="mut">Across {{ accounts|length }} account{{ 's' if accounts|length != 1 }}</div>
+<div class="actions"><a class="btn" href="{{ url_for('transfer') }}">Send money</a><a class="btn sec" href="{{ url_for('withdraw') }}">Withdraw</a></div></section>
+<div class="tiles">{% for a in accounts %}
+<div class="card tile"><div class="tile-top"><span class="pill">{{ a.account_type|title }}</span><span class="pill st-{{ a.status }}">{{ a.status }}</span></div>
+<div class="mono" data-copy="{{ a.account_number }}" title="Click to copy">{{ a.account_number }}</div>
+<div class="tile-foot"><div class="tile-bal">{{ a.balance_paise|inr }}</div><a href="{{ url_for('account_view', account_id=a.id) }}">Statement →</a></div></div>{% endfor %}</div>
+
+{% endblock %}
